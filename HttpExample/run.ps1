@@ -14,7 +14,11 @@ if (-not $name) {
 
 if ($name) {
     $status = [HttpStatusCode]::OK
-    $body = "Hello $name"
+    New-AzContainerGroup -ResourceGroupName kimofnps -Name $name `
+        -Image alpine -OsType Linux `
+        -Command "echo 'Hello from an Azure container instance triggered by an Azure function'" `
+        -RestartPolicy Never
+    $body = "Started container group $name"
 }
 else {
     $status = [HttpStatusCode]::BadRequest
